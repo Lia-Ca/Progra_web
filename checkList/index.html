@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check List - ToDo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>CHECK LIST</h1>
+        <div class="cont1">
+            <h2>Nueva Tarea</h2>
+            <div class="entrada-datos">
+                <div class="campo">
+                    <label for="descripcion">Descripción:</label>
+                    <input type="text" class="ent-dat" id="descripcion" placeholder="Ej: Estudiar lenguaje">
+                </div>
+                <div class="campo">
+                    <label for="fecha">Fecha:</label>
+                    <input type="date" class="ent-dat" id="fecha">
+                </div>
+                <button class="btn-primario" onclick="agregarTarea()">Guardar Tarea</button>
+            </div>
+        </div>
+
+        
+        <div class="cont2">
+            <h1 class="titulo">TODO LIST</h1>
+
+            <!-- Encabezados -->
+            <div class="header">
+                <div class="col">Descripción</div>
+                <div class="col">Fecha</div>
+                <div class="col">Estado</div>
+            </div>
+            <div id="lista"></div>
+        </div>
+    </div>
+
+    <script>
+        function agregarTarea() {
+            const descripcion = document.getElementById("descripcion").value.trim();
+            const fecha = document.getElementById("fecha").value;
+
+            if (!descripcion || !fecha) {
+                alert("Por favor completa la descripción y la fecha");
+                return;
+            }
+
+            const lista = document.getElementById("lista");
+
+            const item = document.createElement("div");
+            item.className = "item";
+
+            item.innerHTML = `
+                <div class="col descripcion">${descripcion}</div>
+                <div class="col">${fecha}</div>
+                <div class="col">
+                    <input type="checkbox" class="check" onchange="marcarCompletada(this)">
+                </div>
+            `;
+
+            lista.appendChild(item);
+
+            document.getElementById("descripcion").value = "";
+            document.getElementById("fecha").value = "";
+        }
+
+        function marcarCompletada(checkbox) {
+            const item = checkbox.closest(".item");
+            const descripcion = item.querySelector(".descripcion");
+
+            if (checkbox.checked) {
+                descripcion.style.textDecoration = "line-through";
+                descripcion.style.color = "#888";
+            } else {
+                descripcion.style.textDecoration = "none";
+                descripcion.style.color = "#fff";
+            }
+        }
+
+        document.getElementById("descripcion").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") agregarTarea();
+        });
+    </script>
+</body>
+</html>
